@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'docker build -t myapp .'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Add testing steps here
+            }
+        }
+
+        stage('Deploy to Test') {
+            steps {
+                sh 'ansible-playbook -i inventory test_server.yml'
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                sh 'ansible-playbook -i inventory production_server.yml'
+            }
+        }
+    }
+}

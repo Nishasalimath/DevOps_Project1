@@ -1,0 +1,17 @@
+---
+- name: Provision Production Server
+  hosts: production
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+    - name: Pull Docker Image
+      docker_image:
+        name: myapp
+        source: pull
+    - name: Run Docker Container
+      docker_container:
+        name: myapp_container
+        image: myapp
+        state: started
